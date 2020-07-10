@@ -114,7 +114,7 @@ def cf_period(r):
             return pos-remainders[p,q]
         remainders[p,q] = pos
 
-print len([x for x in range(2,10001) if cf_period(x)%2==1])
+print(len([x for x in range(2,10001) if cf_period(x)%2==1]))
 
 #%% others 2
 

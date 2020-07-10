@@ -5,7 +5,7 @@ Created on Sun Jun 21 20:57:02 2020
 @author: zhixia liu
 """
 from math import sqrt
-
+import itertools
 def gcd(p,q):
     if q == 0:
         return p
@@ -129,5 +129,27 @@ class prime_list():
     
     def __iter__(self):
         return iter(self.primelst)
+
+#%% continuous fraction
+def sqrcf(N):
+    m = 0
+    d = 1
+    sqr = int(sqrt(N))
+    a = sqr
+    if a**2 == N:
+        return []
+    l = [a]
+
+    while a != 2*sqr:
+        m = d*a - m
+        d = (N-m**2)//d
+        a = (sqr + m)//d
+        l.append(a)
+    
+    return l
+
+
+
+
 
 

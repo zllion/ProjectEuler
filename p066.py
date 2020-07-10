@@ -57,7 +57,7 @@ for d in D:
     x = minimalsolution(d)
     if x is not None and x>maxx:
         maxx = x
-        print(maxx)
+        print(maxx,d)
     X.append(x)
 print(maxx)
 
@@ -87,3 +87,58 @@ for d in D:
         print(maxx,d)
     X.append(x)
 print(maxx)
+
+#%% pell's equation solved by continued fraction
+
+from helper import sqrcf,isSquare
+
+def minimalsolution(d):
+    if isSquare(d):
+        return 1,0
+    cf = sqrcf(d)
+    p0 = 1
+    p1 = cf[0]
+    q0 = 0
+    q1 = 1
+    p = p1
+    q = q1
+    n = 1
+    pcf = cf[1:]
+    l = len(pcf)
+    t = l*(l%2+1)
+    while n<t:
+        p = pcf[(n-1)%l]*p1+p0
+        p0=p1
+        p1=p
+        q = pcf[(n-1)%l]*q1+q0
+        q0=q1
+        q1=q
+        n += 1
+    return p,q
+maxsol = 0
+for d in range(2,1001):
+    if isSquare(d): continue
+    x,y = minimalsolution(d)
+    if x>maxsol:
+        maxsol=x
+        print(maxsol,d)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
