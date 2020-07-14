@@ -36,20 +36,70 @@ def isPrime(n) :
 def isSquare(n):
     return int(sqrt(n))**2 == n
 
+def primefactor(n):
+    # number must be even
+    pf = []
+    if n%2 == 0:
+        pf.append(2)
+    while n % 2 == 0:
+        n = n//2
+    # number must be odd
+    for i in range(3, int(sqrt(n)) + 1, 2):
+        if i > n:
+            break
+        if n%i == 0:
+            pf.append(i)
+        while n % i == 0:
+            n = n // i
+    # prime number greator than two
+    if n > 2:
+        pf.append(n)
+    return pf
+
+def coprime(n):
+    pf = primefactor(n)
+    sieve = [False]*n
+    for p in pf:
+        for i in range(p-1,n,p):
+            sieve[i] = True
+    return [j+1 for j,i in enumerate(sieve) if not i]
+
+def totient(n):
+    result = n
+    if n%2 == 0:
+        result -= result//2
+    while n % 2 == 0:
+        n = n//2
+    # number must be odd
+    for i in range(3, int(sqrt(n)) + 1, 2):
+        if i > n:
+            break
+        if n%i == 0:
+            result -= result//i
+        while n % i == 0:
+            n = n // i
+    # prime number greator than two
+    if n > 2:
+        result -= result // int(n)
+    return result
+    
+    
 def maxPrimeFactor(n):
    # number must be even
-   while n % 2 == 0:
-      max_Prime = 2
-      n /= 2
-   # number must be odd
-   for i in range(3, int(sqrt(n)) + 1, 2):
-      while n % i == 0:
-         max_Prime = i
-         n = n / i
-   # prime number greator than two
-   if n > 2:
-      max_Prime = n
-   return int(max_Prime)
+    while n % 2 == 0:
+        max_Prime = 2
+        n /= 2
+    # number must be odd
+    for i in range(3, int(sqrt(n)) + 1, 2):
+        while n % i == 0:
+            max_Prime = i
+            n = n / i
+    # prime number greator than two
+    if n > 2:
+        max_Prime = n
+    return int(max_Prime)
+
+
 
 def EratisthenesSieve(limit):
     crosslimit = int(sqrt(limit))
@@ -62,6 +112,7 @@ def EratisthenesSieve(limit):
             for j in range(i*i+2*i,limit,2*i+2):
                 sieve[j] = True
     return [i+1 for i in range(limit) if not sieve[i]]
+
 
 def divisor(n):
     divisorlst = [1]
