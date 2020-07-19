@@ -12,6 +12,11 @@ def gcd(p,q):
     p ,q = q, p%q
     return gcd(p,q)
 
+def reduce(n,d):
+    c = gcd(n,d)
+    return (n//c,d//c)
+    
+    
 def isPrime(n) : 
   
     # Corner cases 
