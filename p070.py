@@ -30,3 +30,4 @@ for n in tqdm(range(2,10000000)):
 print(min(results[1:],key=lambda x: x[0]/x[1]))
 
 #%% search primes around sqrt(10000000)
+
