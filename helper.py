@@ -6,6 +6,7 @@ Created on Sun Jun 21 20:57:02 2020
 """
 from math import sqrt
 import itertools
+
 def gcd(p,q):
     if q == 0:
         return p
