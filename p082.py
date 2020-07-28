@@ -19,33 +19,29 @@ Find the minimal path sum from the left column to the right column in matrix.txt
 #%% naive
 
 
-
 import numpy as np
 from functools import lru_cache
 m=np.loadtxt(open('p082_matrix.txt', "rb"), delimiter=",", skiprows=0)
 
 limit_i,limit_j = m.shape
 
-@lru_cache(maxsize=None)
-def minimalpath(i,j,updown = 0):
-    if j >= limit_j: 
-        return 0
-    if i== 0:
-        if updown == 1:
-            return m[i,j] + minimalpath(i,j+1)
-        else:
-            return m[i,j]+min(minimalpath(i+1,j,-1),minimalpath(i,j+1))
-    elif i == limit_i-1:
-        if updown == -1:
-            return m[i,j] + minimalpath(i,j+1)
-        else:
-            return m[i,j]+min(minimalpath(i-1,j,1),minimalpath(i,j+1))
-    else:
-        if updown == 1:
-            return m[i,j] + min(minimalpath(i-1,j,1),minimalpath(i,j+1))
-        elif updown == -1:
-            return m[i,j] + min(minimalpath(i+1,j,-1),minimalpath(i,j+1))
-        else:
-            return m[i,j] + min(minimalpath(i+1,j,-1),minimalpath(i-1,j,+1),minimalpath(i,j+1))
-
-print(minimalpath(0,0))
+cumulative = np.zeros(m.shape)
+#initiallize
+cumulative[:,limit_j-1]=m[:,limit_j-1]
+for j in range(limit_j-2,-1,-1):
+    for i in range(limit_i):
+        minipath = cumulative[i,j+1]
+        upper = 0
+        iu=i-1
+        while iu>=0 and upper<minipath:
+            upper += m[iu,j]
+            minipath = min(upper+cumulative[iu,j+1],minipath)
+            iu -= 1
+        below = 0
+        ib = i+1
+        while ib<limit_i and below<minipath:
+            below += m[ib,j]
+            minipath = min(below+cumulative[ib,j+1],minipath)
+            ib += 1
+        cumulative[i,j]=minipath+m[i,j]
+print(min(cumulative[:,0]))
