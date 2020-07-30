@@ -6,6 +6,8 @@ Created on Sun Jun 21 20:57:02 2020
 """
 from math import sqrt
 import itertools
+import operator as op
+from functools import reduce
 
 def gcd(p,q):
     if q == 0:
@@ -13,10 +15,15 @@ def gcd(p,q):
     p ,q = q, p%q
     return gcd(p,q)
 
-def reduce(n,d):
+def reducefrac(n,d):
     c = gcd(n,d)
     return (n//c,d//c)
     
+def ncr(n, r):
+    r = min(r, n-r)
+    numer = reduce(op.mul, range(n, n-r, -1), 1)
+    denom = reduce(op.mul, range(1, r+1), 1)
+    return numer // denom
     
 def isPrime(n) : 
   
