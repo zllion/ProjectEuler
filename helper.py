@@ -8,6 +8,8 @@ from math import sqrt
 import itertools
 import operator as op
 from functools import reduce
+import numpy as np
+
 
 def gcd(p,q):
     if q == 0:
@@ -127,7 +129,7 @@ def EratisthenesSieve(limit):
     return [i+1 for i in range(limit) if not sieve[i]]
 
 
-def divisor(n):
+def divisor(n): # self (n) not included
     divisorlst = [1]
     for j in range(2,int(sqrt(n))+1):
         if n%j == 0:
@@ -214,6 +216,52 @@ def sqrcf(N):
 
 
 
+#%% triangle
 
+def triangleareaHeron(a,b,c):
+    s = (a+b+c)/2
+    A = sqrt(s*(s-a)*(s-b)*(s-c))
+    return A
+
+#%% sudoku
+
+class SudokuSolver():
+    
+    def __init__(self,sudo):
+        self.sudo = np.copy(sudo)
+        self.empty = np.argwhere(sudo==0)
+        self.currentpointer = 0
+        self.setpointer()
+    
+    def setpointer(self):
+        self.pointer = tuple(self.empty[self.currentpointer])
+    
+    def search(self):
+        while self.currentpointer < len(self.empty):
+            self.setpointer()
+            while self.sudo[self.pointer] < 9:
+                self.sudo[self.pointer] += 1
+                if self.checkvalidity():
+                    self.currentpointer += 1
+                    break
+            else:
+                self.sudo[self.pointer] = 0
+                self.currentpointer -= 1
+        return self.sudo
+    
+    def checkvalidity(self):
+        i,j = self.pointer
+        n = self.sudo[self.pointer]
+        if (n in self.sudo[i,:j]) or (n in self.sudo[i,j+1:]):
+            return False
+        elif (n in self.sudo[:i,j]) or (n in self.sudo[i+1:,j]):
+            return False
+        else:
+            ii = i//3
+            jj = j//3
+            rg = [(x,y) for x in range(ii*3,ii*3+3) for y in range(jj*3,jj*3+3)]
+            rg.remove((i,j))
+            return not any([n == self.sudo[ind] for ind in rg])
+        
 
 
